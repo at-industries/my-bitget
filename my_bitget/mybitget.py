@@ -59,6 +59,7 @@ class MyBitget:
         self._httpx_client = self._get_httpx_client()
 
     async def PUBLIC_get_coin_info(self, ticker: str) -> Tuple[int, Union[dict, Exception]]:
+        """Gets the information about every coin's chain (e.g., contract_address, withdraw_fee, min_withdraw_amount) by its ticker (e.g., BTC, ETH)."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/public/coins'
@@ -81,6 +82,10 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def PUBLIC_get_chain_info(self, ticker: str, chain: str) -> Tuple[int, Union[dict, Exception]]:
+        """
+        Gets the information about specific coin's chain (e.g., contract_address, withdraw_fee, min_withdraw_amount)
+        by its ticker (e.g., BTC, ETH) and chain name (e.g., ArbitrumOne, BEP20).
+        """
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             status, result = await self.PUBLIC_get_coin_info(ticker=ticker)
@@ -95,6 +100,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def PUBLIC_get_symbol_info(self, ticker: str) -> Tuple[int, Union[dict, Exception]]:
+        """Gets common information about coin USDT pair trading on spot market (e.g., min_trade_amount, price_precision, min_trade_usdt)."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/public/symbols'
@@ -117,6 +123,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def PUBLIC_get_ticker_info(self, ticker: str) -> Tuple[int, Union[dict, Exception]]:
+        """Gets market information about coin USDT pair trading on spot market (e.g., open_price, quote_volume, change_24h)."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/market/tickers'
@@ -139,6 +146,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def PUBLIC_get_price(self, ticker: str) -> Tuple[int, Union[float, Exception]]:
+        """Gets the price (in USDT) of a specific coin by its ticker (e.g., BTC, ETH)"""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             status, result = await self.PUBLIC_get_ticker_info(ticker=ticker)
@@ -150,6 +158,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SPOT_is_connected(self, ) -> Tuple[int, Union[bool, Exception]]:
+        """Checks the connection to the spot account."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/account/assets'
@@ -172,6 +181,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SPOT_get_account_info(self, ) -> Tuple[int, Union[dict, Exception]]:
+        """Gets common information about main account (e.g., user_id, ips, regis_time)."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/account/info'
@@ -194,6 +204,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SPOT_get_balance(self, ticker: Optional[str] = None) -> Tuple[int, Union[dict, Exception]]:
+        """Gets the balance for a specific coin (or for all coins)."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/account/assets'
@@ -216,6 +227,10 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SPOT_convert_usd_to_native(self, amount: float, ticker: str, chain: str) -> Tuple[int, Union[float, Exception]]:
+        """
+        Converts USD amount to the native chain coin amount, rounded to the chain's tick_size value
+        (e.g., 100 USD converts to 0.02857143 ETH for an ETH price of 3500 USD).
+        """
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             status, result = await self.PUBLIC_get_price(ticker=ticker)
@@ -233,6 +248,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SPOT_post_withdrawal(self, ticker: str, chain: str, address: str, amount: float) -> Tuple[int, Union[Tuple[str, str], Exception]]:
+        """Posts a withdrawal on the chain for a specific ticker and chain (withdrawals must be available for created API keys)."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/wallet/withdrawal'
@@ -262,6 +278,10 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SPOT_check_withdrawal(self, time_start: str, order_id: str) -> Tuple[int, Union[bool, Exception]]:
+        """
+        Checks if the withdrawal is completed by its withdrawal_id
+        (the withdrawal_id is returned after posting the withdrawal on the chain).
+        """
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/wallet/withdrawal-records'
@@ -290,6 +310,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SUBACCOUNT_get_subaccounts(self, ) -> Tuple[int, Union[list, Exception]]:
+        """Gets the names of all subaccounts created under the main OKX account."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/user/virtual-subaccount-list'
@@ -318,6 +339,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SUBACCOUNT_get_balance(self, subaccount_name: str, ticker: Optional[str] = None) -> Tuple[int, Union[list, Exception]]:
+        """Gets the balance for a specific coin (or for all coins) in a specific subaccount."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/account/subaccount-assets'
@@ -349,6 +371,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SUBACCOUNT_transfer_to_main(self, subaccount_name: str, ticker: str, amount: float) -> Tuple[int, Union[str, Exception]]:
+        """Transfers coins from a subaccount to the main account for a specific coin from a specific subaccount."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             status, result = await self.SPOT_get_account_info()
