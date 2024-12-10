@@ -36,8 +36,8 @@ class MyBitget:
             asynchrony: Optional[bool] = False,
     ):
         """
-        MyBitget is a convenient library for interacting with the Bitget API.
-        For more details about OKX API, refer to the OKX Documentation: https://www.bitget.com/api-doc/common/intro
+        MyBitget is a convenient library for interacting with Bitget API.
+        For more details about Bitget API, refer to the Bitget Documentation: https://www.bitget.com/api-doc/common/intro
 
         Almost all class methods (except utility functions) return tuples, with an integer status as the first element:
         - `0`: Success status (indicates the method completed successfully; the second element in the tuple contains the result)
@@ -59,7 +59,7 @@ class MyBitget:
         self._httpx_client = self._get_httpx_client()
 
     async def PUBLIC_get_coin_info(self, ticker: str) -> Tuple[int, Union[dict, Exception]]:
-        """Gets the information about every coin's chain (e.g., contract_address, withdraw_fee, min_withdraw_amount) by its ticker (e.g., BTC, ETH)."""
+        """Gets information about all coin chains (e.g., contract_address, withdraw_fee, min_withdraw_amount) by its ticker (e.g., BTC, ETH)."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/spot/public/coins'
@@ -83,7 +83,7 @@ class MyBitget:
 
     async def PUBLIC_get_chain_info(self, ticker: str, chain: str) -> Tuple[int, Union[dict, Exception]]:
         """
-        Gets the information about specific coin's chain (e.g., contract_address, withdraw_fee, min_withdraw_amount)
+        Gets information about specific coin's chain (e.g., contract_address, withdraw_fee, min_withdraw_amount)
         by its ticker (e.g., BTC, ETH) and chain name (e.g., ArbitrumOne, BEP20).
         """
         log_process = f'{inspect.currentframe().f_code.co_name}'
@@ -310,7 +310,7 @@ class MyBitget:
             return -1, Exception(f'{log_process} | {e}')
 
     async def SUBACCOUNT_get_subaccounts(self, ) -> Tuple[int, Union[list, Exception]]:
-        """Gets the names of all subaccounts created under the main OKX account."""
+        """Gets the names of all subaccounts created under the main Bitget account."""
         log_process = f'{inspect.currentframe().f_code.co_name}'
         try:
             endpoint = f'/api/v2/user/virtual-subaccount-list'
