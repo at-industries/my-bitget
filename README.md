@@ -129,11 +129,12 @@ asyncio.run(example_04())
 ```
 
 ### Пример использования метода `SUBACCOUNT_transfer_to_main`
-Метод `SUBACCOUNT_transfer_to_main` переводит средства с суб-аккаунта на основной `Spot` аккаунт. В нашем примере мы переводим `100USDC` с суб-аккаунта под именем `SUBACCOUNT-NAME`.
+Метод `SUBACCOUNT_transfer_to_main` переводит средства с суб-аккаунта на основной `Spot` аккаунт. В нашем примере мы переводим `100USDC` с суб-аккаунта c айди `1234567890`.
+
 ```python
 async def example_05():
     status, result = await my_bitget.SUBACCOUNT_transfer_to_main(
-        subaccount_name='SUBACCOUNT-NAME',
+        subaccount_id='1234567890',
         ticker='USDC',
         amount=100.0,
     )
@@ -141,6 +142,7 @@ async def example_05():
         print(f'05 | Transfer Id: {result}')
     else:
         print(f'05 | Error while transferring tokens from subaccount to main account: {result}')
+
 
 asyncio.run(example_05())
 ```

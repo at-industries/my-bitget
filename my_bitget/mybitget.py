@@ -363,7 +363,7 @@ class MyBitget:
         except Exception as e:
             return -1, Exception(f'{log_process} | {e}')
 
-    async def SUBACCOUNT_get_balance(self, subaccount_name: str, ticker: Optional[str] = None) -> Tuple[int, Union[list, Exception]]:
+    async def SUBACCOUNT_get_balance(self, subaccount_id: str, ticker: Optional[str] = None) -> Tuple[int, Union[list, Exception]]:
         """
         Gets the balance for a specific coin (or for all coins) in a specific subaccount.
         Endpoint: https://www.bitget.com/api-doc/spot/account/Get-Subaccount-Assets
@@ -381,7 +381,7 @@ class MyBitget:
             json = response.json()
             if response.status_code == 200:
                 for subaccount in json['data']:
-                    if str(subaccount['userId']) == subaccount_name:
+                    if str(subaccount['userId']) == subaccount_id:
                         assets: list = subaccount['assetsList']
                         if ticker is None:
                             return 0, assets
@@ -398,7 +398,7 @@ class MyBitget:
         except Exception as e:
             return -1, Exception(f'{log_process} | {e}')
 
-    async def SUBACCOUNT_transfer_to_main(self, subaccount_name: str, ticker: str, amount: float) -> Tuple[int, Union[str, Exception]]:
+    async def SUBACCOUNT_transfer_to_main(self, subaccount_id: str, ticker: str, amount: float) -> Tuple[int, Union[str, Exception]]:
         """
         Transfers coins from a subaccount to the main account for a specific coin from a specific subaccount.
         Endpoint: https://www.bitget.com/api-doc/spot/account/Sub-Transfer
@@ -414,7 +414,7 @@ class MyBitget:
                     'toType': 'spot',
                     'amount': amount,
                     'coin': ticker,
-                    'fromUserId': int(subaccount_name),
+                    'fromUserId': int(subaccount_id),
                     'toUserId': result['data']['userId'],
                 }
                 response = await self._httpx_request(

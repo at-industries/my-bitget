@@ -67,7 +67,7 @@ asyncio.run(example_04())
 
 async def example_05():
     status, result = await my_bitget.SUBACCOUNT_transfer_to_main(
-        subaccount_name='SUBACCOUNT-NAME',
+        subaccount_id='1234567890',
         ticker='USDC',
         amount=100.0,
     )
