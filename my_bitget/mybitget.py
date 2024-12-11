@@ -4,6 +4,7 @@ from httpx import Client, AsyncClient, Response
 
 import hmac
 import time
+import json
 import httpx
 import base64
 import inspect
@@ -160,7 +161,7 @@ class MyBitget:
         try:
             status, result = await self.PUBLIC_get_ticker_info(ticker=ticker)
             if status == 0:
-                return 0, result['data'][0]['lastPr']
+                return 0, float(result['data'][0]['lastPr'])
             else:
                 return -1, Exception(f'{log_process} | {result}')
         except Exception as e:
@@ -466,7 +467,7 @@ class MyBitget:
         return response
 
     def _get_signature(self, timestamp: str, method: str, endpoint: str, body: Union[str, dict]) -> str:
-        message = str(timestamp) + str.upper(method) + endpoint + str(body)
+        message = str(timestamp) + str.upper(method) + endpoint + (json.dumps(body, separators=(',', ':')) if isinstance(body, dict) else body)
         mac = hmac.new(bytes(self._secret_key, encoding='utf-8'), bytes(message, encoding='utf-8'), digestmod='sha256')
         signature = str(base64.b64encode(mac.digest()), 'utf8')
         return signature
